@@ -1,0 +1,105 @@
+<!-- Login/Register Section -->
+<section id="login-register" class="login-register section">
+  <div class="container">
+    <!-- Tabs for Login and Register -->
+    <div class="tabs">
+      <button class="tab-link active" data-tab="login">Login</button>
+      <button class="tab-link" data-tab="register">Register</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login" class="tab-content active">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn-yellow">Login</button>
+        <p class="register-link">Don't have an account? <a href="#register" id="go-to-register">Register</a></p>
+      </form>
+    </div>
+
+    <!-- Register Form -->
+    <div id="register" class="tab-content">
+      <h2>Register</h2>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="register-username">Username</label>
+          <input type="text" id="register-username" name="username" placeholder="Choose a username" required>
+        </div>
+        <div class="form-group">
+          <label for="register-email">Email</label>
+          <input type="email" id="register-email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="register-password">Password</label>
+          <input type="password" id="register-password" name="password" placeholder="Choose a password" required>
+        </div>
+        <div class="form-group">
+          <label for="register-confirm-password">Confirm Password</label>
+          <input type="password" id="register-confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+        </div>
+        <button type="submit" class="btn-yellow">Register</button>
+      </form>
+    </div>
+  </div>
+</section><!-- /Login/Register Section -->
+
+<script>// Scroll to Login/Register Section when Login Button is clicked
+  document.getElementById('home-login-btn')?.addEventListener('click', () => {
+    document.getElementById('login-register').scrollIntoView({ behavior: 'smooth' });
+  });
+  
+  // Switch to Register Tab when "Don't have an account? Register" is clicked
+  document.getElementById('go-to-register')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelectorAll('.tab-link, .tab-content').forEach(item => {
+      item.classList.remove('active');
+    });
+    document.querySelector('[data-tab="register"]').classList.add('active');
+    document.getElementById('register').classList.add('active');
+  });
+  
+  // Tab Switching
+  document.querySelectorAll('.tab-link').forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Remove active class from all tabs and content
+      document.querySelectorAll('.tab-link, .tab-content').forEach(item => {
+        item.classList.remove('active');
+      });
+  
+      // Add active class to the clicked tab and corresponding content
+      tab.classList.add('active');
+      document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+    });
+  });
+  
+  // Form Submission Handling
+  document.getElementById('loginForm')?.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    console.log('Login Data:', { email, password });
+    alert('Login successful!');
+  });
+  
+  document.getElementById('registerForm')?.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const username = document.getElementById('register-username').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const confirmPassword = document.getElementById('register-confirm-password').value;
+  
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+  
+    console.log('Register Data:', { username, email, password });
+    alert('Registration successful!');
+  });</script>
