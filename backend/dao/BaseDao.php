@@ -1,93 +1,130 @@
 <?php
-require_once __DIR__ . "config.php";
+require_once __DIR__ . '/config.php';
 
-class BaseDao
-{
+class BaseDao {
     protected $connection;
     private $table_name;
 
-    public function __construct($table_name)
-    {
+    public function __construct($table_name) {
         $this->table_name = $table_name;
-        try {
-            $this->connection = new PDO(
-                "mysql:host=" . Config::DB_HOST() . ";dbname=" . Config::DB_NAME() . ";port=" . Config::DB_PORT(),
-                Config::DB_USER(),
-                Config::DB_PASSWORD(),
-                [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-                ]
-            );
-        } catch (PDOException $e) {
-            throw $e;
+        $this->connect();
+    }
+
+    private function connect() {
+        if ($this->connection === null) {
+            try {
+                $this->connection = new PDO(
+                    "mysql:host=" . Config::DB_HOST() . 
+                    ";dbname=" . Config::DB_NAME() . 
+                    ";port=" . Config::DB_PORT() . 
+                    ";charset=utf8mb4",
+                    Config::DB_USER(),
+                    Config::DB_PASSWORD(),
+                    [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                        PDO::ATTR_EMULATE_PREPARES => false,
+                        PDO::ATTR_PERSISTENT => false
+                    ]
+                );
+            } catch (PDOException $e) {
+                error_log("Database connection failed: " . $e->getMessage());
+                throw new Exception("Database connection error");
+            }
         }
     }
 
-    protected function query($query, $params)
-    {
-        $stmt = $this->connection->prepare($query);
-        $stmt->execute($params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    protected function query($query, $params = []) {
+        try {
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute($params);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            $this->handleException($e, $query);
+        }
     }
 
-    protected function query_unique($query, $params)
-    {
+    protected function query_unique($query, $params = []) {
         $results = $this->query($query, $params);
         return reset($results);
     }
 
-    /**
-     * Method used to get add entity to database
-     * string $first_name: First name is the first name of the course
-     */
-    public function add($entity)
-    {
-        $query = "INSERT INTO " . $this->table_name . " (";
-        foreach ($entity as $column => $value) {
-            $query .= $column . ', ';
-        }
-        $query = substr($query, 0, -2);
-        $query .= ") VALUES (";
-        foreach ($entity as $column => $value) {
-            $query .= ":" . $column . ', ';
-        }
-        $query = substr($query, 0, -2);
-        $query .= ")";
-
-        $stmt = $this->connection->prepare($query);
-        $stmt->execute($entity);
-        $entity['id'] = $this->connection->lastInsertId();
-        return $entity;
+    public function beginTransaction() {
+        $this->connection->beginTransaction();
     }
 
-    /**
-     * Method used to update entity in database
-     */
-    public function update($entity, $id, $id_column = "id")
-    {
-        $query = "UPDATE " . $this->table_name . " SET ";
-        foreach ($entity as $column => $value) {
-            $query .= $column . "=:" . $column . ", ";
+    public function commit() {
+        $this->connection->commit();
+    }
+
+    public function rollBack() {
+        $this->connection->rollBack();
+    }
+
+    public function add($entity) {
+        $columns = implode(', ', array_keys($entity));
+        $values = ':' . implode(', :', array_keys($entity));
+        
+        $query = "INSERT INTO {$this->table_name} ($columns) VALUES ($values)";
+        
+        try {
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute($entity);
+            $entity['id'] = $this->connection->lastInsertId();
+            return $entity;
+        } catch (PDOException $e) {
+            $this->handleException($e, $query);
         }
-        $query = substr($query, 0, -2);
-        $query .= " WHERE " . $id_column . " = :id";
-        $stmt = $this->connection->prepare($query);
+    }
+
+    public function update($entity, $id, $id_column = "id") {
+        $setParts = [];
+        foreach ($entity as $column => $value) {
+            $setParts[] = "$column = :$column";
+        }
+        $setClause = implode(', ', $setParts);
+        
+        $query = "UPDATE {$this->table_name} SET $setClause WHERE $id_column = :id";
         $entity['id'] = $id;
-        $stmt->execute($entity);
-        return $entity;
+        
+        try {
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute($entity);
+            return $entity;
+        } catch (PDOException $e) {
+            $this->handleException($e, $query);
+        }
     }
 
+    public function delete($id, $id_column = "id") {
+        $query = "DELETE FROM {$this->table_name} WHERE $id_column = :id";
+        
+        try {
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute(['id' => $id]);
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            $this->handleException($e, $query);
+        }
+    }
 
-    /**
-     * Method used to delete entity from database
-     */
-    public function delete($id)
-    {
-        $stmt = $this->connection->prepare("DELETE FROM " . $this->table_name . " WHERE id = :id");
-        $stmt->bindValue(':id', $id); #prevent SQL injection
-        $stmt->execute();
+    public function getById($id, $id_column = "id") {
+        $query = "SELECT * FROM {$this->table_name} WHERE $id_column = :id";
+        return $this->query_unique($query, ['id' => $id]);
+    }
+
+    public function getAll($order_column = "id", $order_direction = "ASC") {
+        $order_direction = strtoupper($order_direction) === 'DESC' ? 'DESC' : 'ASC';
+        $query = "SELECT * FROM {$this->table_name} ORDER BY $order_column $order_direction";
+        return $this->query($query);
+    }
+
+    protected function handleException(PDOException $e, $query = "") {
+        error_log("Database error: " . $e->getMessage() . " in query: " . $query);
+        throw new Exception("Database operation failed");
+    }
+
+    public function __destruct() {
+        $this->connection = null;
     }
 }
-
-

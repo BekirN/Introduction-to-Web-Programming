@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: Car Marketplace API
+  version: 1.0.0
+
+paths:
+  /api/cars:
+    get:
+      summary: Get car listings
+      parameters:
+        - name: brand_id
+          in: query
+          schema:
+            type: integer
+        - name: min_price
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: List of cars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+
+components:
+  schemas:
+    Car:
+      type: object
+      properties:
+        id:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        price:
+          type: number
