@@ -1,34 +1,22 @@
 <?php
-require_once __DIR__.'/BaseService.php';
-require_once __DIR__.'/../dao/UserDao.php';
+require_once 'BaseService.php';
 
 class UserService extends BaseService {
-    public function __construct() {
-        parent::__construct(new UserDao());
+    public function __construct($dao) {
+        parent::__construct($dao);
     }
 
-    public function register($user) {
-        if (empty($user['email']) || empty($user['password'])) {
-            throw new Exception("Email and password are required");
+    protected function validateCreateData($data) {
+        if (empty($data['username']) || empty($data['email']) || empty($data['password_hash'])) {
+            throw new Exception('Username, email, and password hash are required');
         }
-        
-        $user['password_hash'] = password_hash($user['password'], PASSWORD_BCRYPT);
-        unset($user['password']);
-        
-        return $this->dao->create($user);
     }
 
-    public function login($email, $password) {
-        $user = $this->dao->getUserByEmail($email);
-        
-        if (!$user || !password_verify($password, $user['password_hash'])) {
-            throw new Exception("Invalid login credentials");
+    protected function validateUpdateData($data) {
+        if ((isset($data['username']) && empty($data['username'])) ||
+            (isset($data['email']) && empty($data['email'])) ||
+            (isset($data['password_hash']) && empty($data['password_hash']))) {
+            throw new Exception('Username, email, and password hash cannot be empty');
         }
-        
-        return $user;
-    }
-
-    public function getSellerCars($user_id) {
-        return $this->dao->getSellerCars($user_id);
     }
 }

@@ -1,13 +1,11 @@
-<!-- Login/Register Section -->
+
 <section id="login-register" class="login-register section">
   <div class="container">
-    <!-- Tabs for Login and Register -->
     <div class="tabs">
       <button class="tab-link active" data-tab="login">Login</button>
       <button class="tab-link" data-tab="register">Register</button>
     </div>
-
-    <!-- Login Form -->
+    
     <div id="login" class="tab-content active">
       <h2>Login</h2>
       <form id="loginForm">
@@ -24,7 +22,6 @@
       </form>
     </div>
 
-    <!-- Register Form -->
     <div id="register" class="tab-content">
       <h2>Register</h2>
       <form id="registerForm">
@@ -48,9 +45,9 @@
       </form>
     </div>
   </div>
-</section><!-- /Login/Register Section -->
+</section>
 
-<script>// Scroll to Login/Register Section when Login Button is clicked
+<script>
   document.getElementById('home-login-btn')?.addEventListener('click', () => {
     document.getElementById('login-register').scrollIntoView({ behavior: 'smooth' });
   });
@@ -68,12 +65,10 @@
   // Tab Switching
   document.querySelectorAll('.tab-link').forEach(tab => {
     tab.addEventListener('click', () => {
-      // Remove active class from all tabs and content
       document.querySelectorAll('.tab-link, .tab-content').forEach(item => {
         item.classList.remove('active');
       });
   
-      // Add active class to the clicked tab and corresponding content
       tab.classList.add('active');
       document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
     });

@@ -1,19 +1,25 @@
 <?php
-require_once __DIR__ . "/BaseDao.php";
+require_once __DIR__ . '/BaseDao.php';
 
 class UserDao extends BaseDao {
     public function __construct() {
-        parent::__construct("users");
-    }
-
-    public function findByUsername($username) {
-        return $this->query_unique("SELECT * FROM users WHERE username = :username", ["username" => $username]);
+        parent::__construct('users', 'user_id');
     }
 
     public function findByEmail($email) {
-        return $this->query_unique("SELECT * FROM users WHERE email = :email", ["email" => $email]);
+        $query = "SELECT * FROM {$this->table_name} WHERE email = :email";
+        return $this->query_unique($query, ['email' => $email]);
     }
-    public function insert($entity) {
-        return $this->add($entity);
+
+    public function getById($id, $id_column = 'user_id') {
+        return parent::getById($id, $id_column);
+    }
+
+    public function update($id, $entity, $id_column = 'user_id') {
+        return parent::update($id, $entity, $id_column);
+    }
+
+    public function delete($id, $id_column = 'user_id') {
+        return parent::delete($id, $id_column);
     }
 }

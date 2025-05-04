@@ -1,4 +1,4 @@
-<!-- Shop Section for SPA -->
+
 <section id="shop" class="shop-section">
     <h2>Shop Our Inventory</h2>
     <div class="search-filters">
@@ -13,7 +13,7 @@
     </div>
     
     <div class="cars-grid" id="carsContainer">
-        <!-- Cars will be loaded here -->
+        <!-- load cars -->
     </div>
 
     <style>
@@ -66,7 +66,7 @@
     </style>
 
     <script>
-        // Mock data - replace with real API calls when backend works
+        //test
         const mockCars = [
             {
                 id: 1,
@@ -86,7 +86,7 @@
                 mileage: 8000,
                 image: "https://via.placeholder.com/300x200?text=Ford+Mustang"
             },
-            // Add more mock cars as needed
+        
         ];
 
         function renderCars(cars) {
@@ -107,7 +107,7 @@
             `).join('');
         }
 
-        // Filter functionality
+ 
         document.getElementById('searchInput').addEventListener('input', filterCars);
         document.getElementById('priceFilter').addEventListener('change', filterCars);
 
@@ -130,7 +130,7 @@
             renderCars(filtered);
         }
 
-        // Initial render
+     
         renderCars(mockCars);
     </script>
 </section>

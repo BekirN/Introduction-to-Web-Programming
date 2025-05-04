@@ -2,7 +2,9 @@ openapi: 3.0.0
 info:
   title: Car Marketplace API
   version: 1.0.0
-
+servers:
+  - url: http://localhost/BekirNokic/Introduction-to-Web-Programming/backend
+    description: Local development server
 paths:
   /api/cars:
     get:
@@ -23,8 +25,7 @@ paths:
             application/json:
               schema:
                 type: array
-                items:
-                  $ref: '#/components/schemas/Car'
+              
 
 components:
   schemas:

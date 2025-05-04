@@ -1,20 +1,24 @@
 <?php
-require_once __DIR__.'/BaseService.php';
-require_once __DIR__.'/../dao/ModelDao.php';
+require_once 'BaseService.php';
+require_once __DIR__ . '/../dao/ModelDao.php';
+require_once __DIR__ . '/../dao/BrandDao.php';
 
 class ModelService extends BaseService {
-    public function __construct() {
-        parent::__construct(new ModelDao());
+    public function __construct($dao) {
+        parent::__construct($dao);
     }
 
-    public function getModelsByBrand($brand_id) {
-        return $this->dao->getModelsByBrand($brand_id);
-    }
-
-    public function create($data) {
-        if (empty($data['model_name']) || empty($data['brand_id'])) {
-            throw new Exception("Model name and brand ID are required");
+    protected function validateCreateData($data) {
+        if (empty($data['brand_id']) || empty($data['model_name']) || empty($data['year'])) {
+            throw new Exception('Brand ID, model name, and year are required');
         }
-        return parent::create($data);
+    }
+
+    protected function validateUpdateData($data) {
+        if ((isset($data['brand_id']) && empty($data['brand_id'])) ||
+            (isset($data['model_name']) && empty($data['model_name'])) ||
+            (isset($data['year']) && empty($data['year']))) {
+            throw new Exception('Brand ID, model name, and year cannot be empty');
+        }
     }
 }

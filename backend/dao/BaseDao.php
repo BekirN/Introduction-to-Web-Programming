@@ -1,12 +1,14 @@
 <?php
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../config.php';
 
 class BaseDao {
     protected $connection;
-    private $table_name;
+    protected $table_name;
+    protected $primary_key;
 
-    public function __construct($table_name) {
+    public function __construct($table_name, $primary_key = 'id') {
         $this->table_name = $table_name;
+        $this->primary_key = $primary_key;
         $this->connect();
     }
 
@@ -63,34 +65,34 @@ class BaseDao {
 
     public function add($entity) {
         $columns = implode(', ', array_keys($entity));
-        $values = ':' . implode(', :', array_keys($entity));
-        
-        $query = "INSERT INTO {$this->table_name} ($columns) VALUES ($values)";
+        $placeholders = ':' . implode(', :', array_keys($entity));
+        $query = "INSERT INTO {$this->table_name} ($columns) VALUES ($placeholders)";
         
         try {
             $stmt = $this->connection->prepare($query);
             $stmt->execute($entity);
-            $entity['id'] = $this->connection->lastInsertId();
+            $entity[$this->primary_key] = $this->connection->lastInsertId();
             return $entity;
         } catch (PDOException $e) {
             $this->handleException($e, $query);
         }
     }
 
-    public function update($entity, $id, $id_column = "id") {
+    public function update($id, $entity, $id_column = "id") {
         $setParts = [];
+        $params = [];
         foreach ($entity as $column => $value) {
             $setParts[] = "$column = :$column";
+            $params[$column] = $value;
         }
         $setClause = implode(', ', $setParts);
-        
         $query = "UPDATE {$this->table_name} SET $setClause WHERE $id_column = :id";
-        $entity['id'] = $id;
-        
+        $params['id'] = $id;
+
         try {
             $stmt = $this->connection->prepare($query);
-            $stmt->execute($entity);
-            return $entity;
+            $stmt->execute($params);
+            return $stmt->rowCount();
         } catch (PDOException $e) {
             $this->handleException($e, $query);
         }
@@ -113,18 +115,39 @@ class BaseDao {
         return $this->query_unique($query, ['id' => $id]);
     }
 
-    public function getAll($order_column = "id", $order_direction = "ASC") {
-        $order_direction = strtoupper($order_direction) === 'DESC' ? 'DESC' : 'ASC';
-        $query = "SELECT * FROM {$this->table_name} ORDER BY $order_column $order_direction";
-        return $this->query($query);
+    public function getAll($order_column = null, $order_direction = "ASC") {
+        try {
+            $order_column = $order_column ?: $this->primary_key;
+            $order_direction = strtoupper($order_direction) === 'DESC' ? 'DESC' : 'ASC';
+            
+            // Validate  order column exists in the table
+            $columns = $this->getTableColumns();
+            if (!in_array($order_column, $columns)) {
+                throw new Exception("Invalid order column: $order_column");
+            }
+
+            $query = "SELECT * FROM {$this->table_name} ORDER BY `$order_column` $order_direction";
+            return $this->query($query);
+        } catch (Exception $e) {
+            error_log("Database error in getAll(): " . $e->getMessage());
+            throw new Exception("Database operation failed: " . $e->getMessage());
+        }
+    }
+
+    private function getTableColumns() {
+        $query = "DESCRIBE {$this->table_name}";
+        $stmt = $this->connection->prepare($query);
+        $stmt->execute();
+        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'Field');
     }
 
     protected function handleException(PDOException $e, $query = "") {
         error_log("Database error: " . $e->getMessage() . " in query: " . $query);
-        throw new Exception("Database operation failed");
+        throw new Exception("Database operation failed: " . $e->getMessage());
     }
 
     public function __destruct() {
         $this->connection = null;
     }
+    
 }
