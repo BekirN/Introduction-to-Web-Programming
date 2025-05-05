@@ -17,6 +17,6 @@ class Config {
     }
 
     public static function DB_PASSWORD() {
-        return 'bekirnokic2004';
+        return '';
     }
 }
