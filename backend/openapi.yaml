@@ -1,0 +1,42 @@
+openapi: 3.0.0
+info:
+  title: Car Marketplace API
+  version: 1.0.0
+servers:
+  - url: http://localhost/BekirNokic/Introduction-to-Web-Programming/backend
+    description: Local development server
+paths:
+  /api/cars:
+    get:
+      summary: Get car listings
+      parameters:
+        - name: brand_id
+          in: query
+          schema:
+            type: integer
+        - name: min_price
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: List of cars
+          content:
+            application/json:
+              schema:
+                type: array
+              
+
+components:
+  schemas:
+    Car:
+      type: object
+      properties:
+        id:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        price:
+          type: number

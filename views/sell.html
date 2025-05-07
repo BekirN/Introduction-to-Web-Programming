@@ -1,0 +1,282 @@
+
+<section id="sell" class="section bg-white py-5">
+    <div class="container">
+      <div class="text-center mb-5 pt-4">
+        <h1 class="display-5 fw-bold">Sell Your Car With Us</h1>
+        <p class="lead">Get the best price for your vehicle in just a few steps</p>
+      </div>
+  
+      <div class="row g-5">
+        <div class="col-lg-7">
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light py-3">
+              <h3 class="mb-0"><i class="bi bi-car-front me-2 text-warning"></i>Vehicle Details</h3>
+            </div>
+            <div class="card-body">
+              <form id="sellForm">
+                <div class="row mb-4">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Make</label>
+                    <select class="form-select" name="make">
+                      <option selected disabled>Select Make</option>
+                      <option>Honda</option>
+                      <option>Toyota</option>
+                      <option>Ford</option>
+                      <option>BMW</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Model</label>
+                    <input type="text" class="form-control" name="model" placeholder="e.g. Civic, CR-V">
+                  </div>
+                </div>
+  
+      
+                <div class="row mb-4">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Year</label>
+                    <select class="form-select" name="year">
+                      <option selected disabled>Select Year</option>
+                      <option>2023</option>
+                      <option>2022</option>
+                      <option>2021</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Mileage</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" name="mileage" placeholder="e.g. 25000">
+                      <span class="input-group-text">miles</span>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="mb-4">
+                  <label class="form-label">Vehicle Condition</label>
+                  <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="condition" id="excellent" value="excellent" autocomplete="off" checked>
+                    <label class="btn btn-outline-success" for="excellent">Excellent</label>
+  
+                    <input type="radio" class="btn-check" name="condition" id="good" value="good" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="good">Good</label>
+  
+                    <input type="radio" class="btn-check" name="condition" id="fair" value="fair" autocomplete="off">
+                    <label class="btn btn-outline-warning" for="fair">Fair</label>
+  
+                    <input type="radio" class="btn-check" name="condition" id="poor" value="poor" autocomplete="off">
+                    <label class="btn btn-outline-danger" for="poor">Poor</label>
+                  </div>
+                </div>
+  
+            
+                <div class="mb-4">
+                  <label class="form-label">Upload Photos (Minimum 6)</label>
+                  <div class="dropzone border rounded p-4 text-center">
+                    <i class="bi bi-cloud-arrow-up fs-1 text-muted"></i>
+                    <p class="mb-0">Drag & drop photos here or click to browse</p>
+                    <input type="file" multiple accept="image/*" class="d-none" id="carPhotos">
+                  </div>
+                  <div class="photo-preview mt-3 d-flex flex-wrap gap-2"></div>
+                </div>
+  
+             
+                <div class="mb-3">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" name="description" rows="4" placeholder="Describe your vehicle..."></textarea>
+                </div>
+  
+                
+                <button type="submit" class="btn btn-warning btn-lg w-100 mt-3">
+                  <i class="bi bi-lightning-charge-fill"></i> Get Instant Offer
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-lg-5">
+          <div class="card border-0 shadow-sm" style="position: sticky; top: 100px;">
+            <div class="card-header bg-light py-3">
+              <h3 class="mb-0"><i class="bi bi-graph-up me-2 text-warning"></i>Estimated Value</h3>
+            </div>
+            <div class="card-body">
+              
+              <div class="text-center py-4">
+                <h4 class="text-muted mb-0">Your Estimated Price Range</h4>
+                <h2 class="display-5 fw-bold text-primary dynamic-price">$24,500 - $27,800</h2>
+                <div class="progress mt-3" style="height: 10px;">
+                  <div class="progress-bar bg-warning" style="width: 75%"></div>
+                </div>
+                <p class="text-muted mt-2">Based on similar vehicles in your area</p>
+              </div>
+  
+              <hr class="my-4">
+  
+              
+              <h5 class="mb-3"><i class="bi bi-stars me-2 text-warning"></i>Why Sell With Us?</h5>
+              <ul class="list-unstyled selling-benefits">
+                <li class="mb-3">
+                  <i class="bi bi-check-circle-fill text-success me-2"></i>
+                  <strong>No Fees:</strong> Keep 100% of your sale price
+                </li>
+                <li class="mb-3">
+                  <i class="bi bi-check-circle-fill text-success me-2"></i>
+                  <strong>Fast Payment:</strong> Get paid in 24 hours
+                </li>
+                <li class="mb-3">
+                  <i class="bi bi-check-circle-fill text-success me-2"></i>
+                  <strong>Free Pickup:</strong> We'll come to you
+                </li>
+                <li class="mb-3">
+                  <i class="bi bi-check-circle-fill text-success me-2"></i>
+                  <strong>Verified Buyers:</strong> No scams or lowballers
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+ 
+  #sell {
+    padding-top: 80px; 
+  }
+  
+  .dropzone {
+    background: rgba(255, 193, 7, 0.05);
+    border: 2px dashed rgba(255, 193, 7, 0.3) !important;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .dropzone:hover {
+    background: rgba(255, 193, 7, 0.1);
+    border-color: rgba(255, 193, 7, 0.5) !important;
+  }
+  
+  .photo-preview {
+    min-height: 80px;
+  }
+  
+  .photo-preview img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .selling-benefits li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  .btn-warning {
+    background-color: #FFC107;
+    border-color: #FFC107;
+    color: #212529;
+    font-weight: 600;
+  }
+  
+  .btn-check:checked + .btn-outline-warning {
+    background-color: #FFC107;
+    color: #212529;
+  }
+
+  @media (max-width: 992px) {
+    .col-lg-5 > .card {
+      position: static !important;
+      margin-top: 2rem;
+    }
+  }
+  
+  
+  #sellForm input:focus, 
+  #sellForm select:focus, 
+  #sellForm textarea:focus {
+    border-color: #FFC107;
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+  }
+  </style>
+  
+  <script>
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropzone = document.querySelector('.dropzone');
+    const fileInput = document.getElementById('carPhotos');
+    const preview = document.querySelector('.photo-preview');
+  
+    dropzone.addEventListener('click', function() {
+      fileInput.click();
+    });
+  
+    fileInput.addEventListener('change', function(e) {
+      preview.innerHTML = '';
+      
+      Array.from(e.target.files).forEach(file => {
+        if (!file.type.match('image.*')) ;
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = document.createElement('img');
+          img.src = event.target.result;
+          img.className = 'img-thumbnail';
+          img.style.width = '80px';
+          img.style.height = '60px';
+          img.style.objectFit = 'cover';
+          preview.appendChild(img);
+        }
+        reader.readAsDataURL(file);
+      });
+    });
+  
+   
+    const form = document.getElementById('sellForm');
+    const priceDisplay = document.querySelector('.dynamic-price');
+    
+    function updatePriceEstimate() {
+      const make = form.querySelector('[name="make"]').value;
+      const model = form.querySelector('[name="model"]').value;
+      const year = form.querySelector('[name="year"]').value;
+      const mileage = form.querySelector('[name="mileage"]').value;
+      const condition = form.querySelector('[name="condition"]:checked')?.value;
+      
+      if (make && model && year && mileage && condition) {
+        
+        const basePrices = {
+          'Honda': 22000,
+          'Toyota': 24000,
+          'Ford': 20000,
+          'BMW': 35000
+        };
+        
+        const conditionMultipliers = {
+          'excellent': 1.0,
+          'good': 0.9,
+          'fair': 0.8,
+          'poor': 0.6
+        };
+        
+        const basePrice = basePrices[make] || 20000;
+        const mileageAdjustment = Math.max(0.5, 1 - (mileage / 200000));
+        const yearAdjustment = (new Date().getFullYear() - year) * 0.9;
+        const conditionMultiplier = conditionMultipliers[condition] || 0.8;
+        
+        const adjustedPrice = basePrice * mileageAdjustment * conditionMultiplier - yearAdjustment;
+        const lowEstimate = Math.round(adjustedPrice * 0.9);
+        const highEstimate = Math.round(adjustedPrice * 1.1);
+        
+        priceDisplay.textContent = `$${lowEstimate.toLocaleString()} - $${highEstimate.toLocaleString()}`;
+      }
+    }
+    
+    
+    form.addEventListener('input', updatePriceEstimate);
+    form.addEventListener('change', updatePriceEstimate);
+    updatePriceEstimate(); 
+  });
+  </script>

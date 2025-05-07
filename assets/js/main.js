@@ -266,3 +266,80 @@ document.getElementById('registerForm')?.addEventListener('submit', function (e)
   console.log('Register Data:', { username, email, password });
   alert('Registration successful!');
 });
+
+
+
+//shop
+//proba
+const mockCars = [
+  {
+      id: 1,
+      make: "Toyota",
+      model: "Camry",
+      year: 2022,
+      price: 24999,
+      mileage: 15000,
+      image: "https://via.placeholder.com/300x200?text=Toyota+Camry",
+      transmission: "Automatic"
+  },
+  {
+      id: 2, 
+      make: "Ford",
+      model: "Mustang",
+      year: 2021,
+      price: 34999,
+      mileage: 8000,
+      image: "https://via.placeholder.com/300x200?text=Ford+Mustang",
+      transmission: "Automatic"
+  },
+ 
+];
+
+function renderCars(cars) {
+  const container = document.getElementById('carsContainer');
+  container.innerHTML = cars.map(car => `
+      <div class="car-card" data-id="${car.id}">
+          <img src="${car.image}" alt="${car.make} ${car.model}" class="car-image">
+          <div class="car-info">
+              <h3>${car.year} ${car.make} ${car.model}</h3>
+              <div style="display: flex; justify-content: space-between;">
+                  <span>${car.mileage.toLocaleString()} mi</span>
+                  <span>${car.transmission}</span>
+              </div>
+              <div class="car-price">$${car.price.toLocaleString()}</div>
+              <button class="view-details" data-id="${car.id}">View Details</button>
+          </div>
+      </div>
+  `).join('');
+}
+
+function filterCars() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const priceRange = document.getElementById('priceFilter').value;
+  
+  let filtered = mockCars.filter(car => {
+      const matchesSearch = `${car.make} ${car.model}`.toLowerCase().includes(searchTerm);
+      let matchesPrice = true;
+      
+      if (priceRange) {
+          const [min, max] = priceRange.split('-').map(Number);
+          matchesPrice = car.price >= min && (!max || car.price <= max);
+      }
+      
+      return matchesSearch && matchesPrice;
+  });
+  
+  renderCars(filtered);
+}
+
+
+document.getElementById('searchInput').addEventListener('input', filterCars);
+document.getElementById('priceFilter').addEventListener('change', filterCars);
+
+
+renderCars(mockCars);
+
+export function initShopSection() {
+  console.log("Shop section initialized");
+  renderCars(mockCars);
+}

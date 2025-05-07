@@ -23,14 +23,12 @@ $user = $userDao->insert([
 ]);
 print_r($user);
 
-// Insert a test brand
 $brand = $brandDao->insert([
     'brand_name' => 'Toyota',
     'country_of_origin' => 'Japan'
 ]);
 print_r($brand);
 
-// Insert a test model
 $model = $modelDao->insert([
     'brand_id' => $brand['id'],
     'model_name' => 'Corolla',
@@ -39,7 +37,6 @@ $model = $modelDao->insert([
 ]);
 print_r($model);
 
-// Insert a car listing
 $car = $carDao->insert([
     'seller_id' => $user['id'],
     'model_id' => $model['id'],
@@ -51,7 +48,6 @@ $car = $carDao->insert([
 ]);
 print_r($car);
 
-// Insert a transaction (simulate a sale)
 $buyer = $userDao->insert([
     'username' => 'john_buyer',
     'email' => 'john_buyer@example.com',
@@ -71,7 +67,6 @@ $transaction = $transactionDao->insert([
 ]);
 print_r($transaction);
 
-// Fetch all cars
 $cars = $carDao->getAll();
 print_r($cars);
 ?>
