@@ -1,0 +1,28 @@
+<section id="shop" class="shop-section">
+   
+    
+    <!-- Advertisement Banner -->
+    <div class="ad-banner" id="adBanner">
+        <div class="ad-content" id="adContent"></div>
+        <button class="ad-nav prev" onclick="changeAd(-1)">❮</button>
+        <button class="ad-nav next" onclick="changeAd(1)">❯</button>
+    </div>
+
+    <div class="search-filters">
+        <input type="text" placeholder="Search for cars..." id="searchInput">
+        <select id="priceFilter">
+            <option value="">All Prices</option>
+            <option value="0-10000">Under $10K</option>
+            <option value="10000-20000">$10K-$20K</option>
+            <option value="20000-50000">$20K-$50K</option>
+            <option value="50000-100000">$50K-$100K</option>
+        </select>
+    </div>
+    
+    <div class="cars-grid" id="carsContainer">
+        <!-- Cars will  load here -->
+    </div>
+
+    
+    
+</section>

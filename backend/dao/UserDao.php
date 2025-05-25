@@ -1,25 +1,23 @@
 <?php
-require_once __DIR__ . '/BaseDao.php';
+require_once 'BaseDao.php';
 
 class UserDao extends BaseDao {
-    public function __construct() {
-        parent::__construct('users', 'user_id');
+    public function __construct()
+    {
+        parent::__construct("users");
     }
 
-    public function findByEmail($email) {
-        $query = "SELECT * FROM {$this->table_name} WHERE email = :email";
-        return $this->query_unique($query, ['email' => $email]);
+    public function get_user_by_username($username) {
+        $stmt = $this->connection->prepare("SELECT * FROM users WHERE username = :username");
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        return $stmt->fetch();
     }
 
-    public function getById($id, $id_column = 'user_id') {
-        return parent::getById($id, $id_column);
+    public function get_all_sellers() {
+        $stmt = $this->connection->prepare("SELECT * FROM users WHERE is_seller = 1");
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
-    public function update($id, $entity, $id_column = 'user_id') {
-        return parent::update($id, $entity, $id_column);
-    }
-
-    public function delete($id, $id_column = 'user_id') {
-        return parent::delete($id, $id_column);
-    }
 }

@@ -1,26 +1,35 @@
 <?php
-require_once 'BaseService.php';
 require_once __DIR__ . '/../dao/TransactionDao.php';
-require_once __DIR__ . '/../dao/CarDao.php'; 
-require_once __DIR__ . '/../dao/UserDao.php';
 
 class TransactionService extends BaseService {
-    public function __construct($dao) {
-        parent::__construct($dao);
+    public function __construct() {
+        parent::__construct(new TransactionDao());
     }
 
-    protected function validateCreateData($data) {
-        if (empty($data['car_id']) || empty($data['buyer_id']) || empty($data['seller_id']) || empty($data['sale_price'])) {
-            throw new Exception('Car ID, buyer ID, seller ID, and sale price are required');
+    public function get_transactions($payment_method = null) {
+        if ($payment_method) {
+            return $this->dao->get_by_payment_method($payment_method);
         }
+        return $this->dao->getAll();
     }
 
-    protected function validateUpdateData($data) {
-        if ((isset($data['car_id']) && empty($data['car_id'])) ||
-            (isset($data['buyer_id']) && empty($data['buyer_id'])) ||
-            (isset($data['seller_id']) && empty($data['seller_id'])) ||
-            (isset($data['sale_price']) && empty($data['sale_price']))) {
-            throw new Exception('Car ID, buyer ID, seller ID, and sale price cannot be empty');
-        }
+    public function get_transaction_by_id($id) {
+        return $this->dao->getById($id); 
+    }
+
+    public function add_transaction($data) {
+        return $this->dao->add($data); 
+    }
+
+    public function delete_transaction($id) {
+        return $this->dao->delete($id); 
+    }
+
+    public function get_transactions_by_buyer_id($buyer_id) {
+        return $this->dao->get_by_buyer_id($buyer_id);
+    }
+
+    public function get_transactions_by_seller_id($seller_id) {
+        return $this->dao->get_by_seller_id($seller_id);
     }
 }

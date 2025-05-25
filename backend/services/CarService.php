@@ -1,25 +1,39 @@
 <?php
-require_once 'BaseService.php';
 require_once __DIR__ . '/../dao/CarDao.php';
-require_once __DIR__ . '/../dao/ModelDao.php'; 
-require_once __DIR__ . '/../dao/UserDao.php'; 
 
 class CarService extends BaseService {
-    public function __construct($dao) {
-        parent::__construct($dao);
+    public function __construct() {
+        parent::__construct(new CarDao());
     }
 
-    protected function validateCreateData($data) {
-        if (empty($data['seller_id']) || empty($data['model_id']) || empty($data['price'])) {
-            throw new Exception('Seller ID, model ID, and price are required');
+    public function get_cars($state = null) {
+        if ($state) {
+            return $this->dao->get_by_state($state);
         }
+        return $this->dao->getAll();
     }
 
-    protected function validateUpdateData($data) {
-        if ((isset($data['seller_id']) && empty($data['seller_id'])) ||
-            (isset($data['model_id']) && empty($data['model_id'])) ||
-            (isset($data['price']) && empty($data['price']))) {
-            throw new Exception('Seller ID, model ID, and price cannot be empty');
-        }
+    public function get_car_by_id($id) {
+        return $this->dao->getById($id);
+    }
+
+    public function add_car($data) {
+        return $this->dao->add($data);
+    }
+
+    public function update_car($id, $data) {
+        return $this->dao->update($data, $id);
+    }
+
+    public function delete_car($id) {
+        return $this->dao->delete($id);
+    }
+
+    public function get_cars_by_seller_id($seller_id) {
+        return $this->dao->getBySellerId($seller_id);
+    }
+
+    public function get_unsold_cars() {
+        return $this->dao->getUnsoldCars();
     }
 }
