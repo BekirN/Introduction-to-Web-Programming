@@ -1,22 +1,43 @@
 <?php
-require_once 'BaseService.php';
+require_once __DIR__ . '/../dao/UserDao.php';
 
 class UserService extends BaseService {
-    public function __construct($dao) {
-        parent::__construct($dao);
+    public function __construct() {
+        parent::__construct(new UserDao());
     }
 
-    protected function validateCreateData($data) {
-        if (empty($data['username']) || empty($data['email']) || empty($data['password_hash'])) {
-            throw new Exception('Username, email, and password hash are required');
+    public function get_users($is_seller = null) {
+        if ($is_seller !== null) {
+            return $this->dao->get_all_sellers(); 
         }
+        return $this->dao->getAll();
     }
 
-    protected function validateUpdateData($data) {
-        if ((isset($data['username']) && empty($data['username'])) ||
-            (isset($data['email']) && empty($data['email'])) ||
-            (isset($data['password_hash']) && empty($data['password_hash']))) {
-            throw new Exception('Username, email, and password hash cannot be empty');
-        }
+ 
+    public function get_user_by_id($id) {
+        return $this->dao->getById($id);
+    }
+
+    public function add_user($data) {
+        return $this->dao->add($data);
+    }
+
+
+    public function update_user($id, $data) {
+        return $this->dao->update($data, $id);
+    }
+
+    public function delete_user($id) {
+        return $this->dao->delete($id);
+    }
+
+   
+    public function get_user_by_username($username) {
+        return $this->dao->get_user_by_username($username);
+    }
+
+   
+    public function get_all_sellers() {
+        return $this->dao->get_all_sellers();
     }
 }

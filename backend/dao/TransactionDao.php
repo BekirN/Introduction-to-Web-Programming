@@ -1,25 +1,28 @@
 <?php
-require_once __DIR__ . '/BaseDao.php';
+require_once 'BaseDao.php';
 
 class TransactionDao extends BaseDao {
-    public function __construct() {
-        parent::__construct('transactions', 'transaction_id');
+    public function __construct()
+    {
+        parent::__construct("transactions");
+    }
+    public function get_by_payment_method($payment_method) {
+        $stmt = $this->connection->prepare("SELECT * FROM $this->table_name WHERE payment_method = :payment_method");
+        $stmt->bindParam(':payment_method', $payment_method);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function getByBuyerId($buyer_id) {
+        $stmt = $this->connection->prepare("SELECT * FROM transactions WHERE buyer = :buyer");
+        $stmt->bindParam(':buyer', $buyer_id);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
-    public function findByCarId($car_id) {
-        $query = "SELECT * FROM {$this->table_name} WHERE car_id = :car_id";
-        return $this->query($query, ['car_id' => $car_id]);
-    }
-
-    public function getById($id, $id_column = 'transaction_id') {
-        return parent::getById($id, $id_column);
-    }
-
-    public function update($id, $entity, $id_column = 'transaction_id') {
-        return parent::update($id, $entity, $id_column);
-    }
-
-    public function delete($id, $id_column = 'transaction_id') {
-        return parent::delete($id, $id_column);
+    public function getBySellerId($seller_id) {
+        $stmt = $this->connection->prepare("SELECT * FROM transactions WHERE seller_user = :seller_user");
+        $stmt->bindParam(':seller_user', $seller_id);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }

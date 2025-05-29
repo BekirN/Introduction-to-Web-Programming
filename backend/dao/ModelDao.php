@@ -1,25 +1,25 @@
 <?php
-require_once __DIR__ . '/BaseDao.php';
+require_once 'BaseDao.php';
 
 class ModelDao extends BaseDao {
-    public function __construct() {
-        parent::__construct('models', 'model_id');
+    public function __construct()
+    {
+        parent::__construct("models");
     }
 
-    public function findByBrandId($brand_id) {
-        $query = "SELECT * FROM {$this->table_name} WHERE brand_id = :brand_id";
-        return $this->query($query, ['brand_id' => $brand_id]);
+    public function getByBrandId($brandId) {
+        $stmt = $this->connection->prepare("SELECT * FROM models WHERE brand = :brand");
+        $stmt->bindParam(':brand', $brandId);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
-    public function getById($id, $id_column = 'model_id') {
-        return parent::getById($id, $id_column);
+    public function get_by_vehicle_type($type) {
+        $query = "SELECT * FROM models WHERE vehicle_type = :type";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':type', $type);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function update($id, $entity, $id_column = 'model_id') {
-        return parent::update($id, $entity, $id_column);
-    }
-
-    public function delete($id, $id_column = 'model_id') {
-        return parent::delete($id, $id_column);
-    }
 }

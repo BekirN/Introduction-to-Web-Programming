@@ -1,20 +1,30 @@
 <?php
-require_once 'BaseService.php';
+require_once __DIR__ . '/../dao/BrandDao.php';
 
 class BrandService extends BaseService {
-    public function __construct($dao) {
-        parent::__construct($dao);
+    public function __construct() {
+        parent::__construct(new BrandDao());
     }
 
-    protected function validateCreateData($data) {
-        if (empty($data['brand_name'])) {
-            throw new Exception('Brand name is required');
-        }
+    public function get_brand_by_name($name) {
+        return $this->dao->get_by_name($name);
     }
 
-    protected function validateUpdateData($data) {
-        if (isset($data['brand_name']) && empty($data['brand_name'])) {
-            throw new Exception('Brand name cannot be empty');
-        }
+    public function getById($id, $id_column = 'id') {
+        return $this->dao->getById($id, $id_column);
+    }
+
+    public function update($id, $data, $id_column = "id") {
+    return $this->dao->update($data, $id, $id_column);
+    }
+
+  
+    public function delete($id, $id_column = 'id') {
+        return $this->dao->delete($id, $id_column);
+    }
+
+    
+    public function create($entity) {
+        return $this->add($entity); 
     }
 }
