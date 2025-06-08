@@ -307,3 +307,10 @@ function hideAdminMenuIfNotAdmin() {
     UserService.generateMenuItems();
     hideAdminMenuIfNotAdmin();
   });
+
+function getCurrentUserId() {
+  const token = localStorage.getItem('user_token');
+  if (!token) return null;
+  const payload = parseJwt(token);
+  return payload?.user?.id || null;
+}

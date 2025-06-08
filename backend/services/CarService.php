@@ -18,10 +18,15 @@ class CarService extends BaseService {
     }
 
     public function add_car($data) {
+        unset($data['brand']);
+        $data['is_sold'] = $data['is_sold'] ?? 0;
         return $this->dao->add($data);
     }
 
+
     public function update_car($id, $data) {
+        unset($data['brand']);
+        $data['is_sold'] = $data['is_sold'] ?? 0;
         return $this->dao->update($data, $id);
     }
 
