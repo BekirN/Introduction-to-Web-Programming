@@ -65,6 +65,7 @@ class BaseDao {
         $stmt->execute($entity);
         $entity['id'] = $this->connection->lastInsertId();
         return $entity;
+        
     }
     public function update($entity, $id, $id_column = "id")
     {

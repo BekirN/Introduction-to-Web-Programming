@@ -134,6 +134,7 @@ Flight::route('POST /cars', function(){
 Flight::route('PUT /cars/@id', function($id){
     Flight::auth_middleware()->authorizeRoles([Roles::ADMIN]);
     $data = Flight::request()->data->getData();
+
     Flight::json(Flight::carService()->update_car($id, $data));
 });
 

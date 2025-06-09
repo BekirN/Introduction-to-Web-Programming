@@ -30,7 +30,7 @@ class CarDao extends BaseDao {
      public function getAll() {
         $sql = "
             SELECT 
-                c.id, c.price, c.mileage, c.color, c.state, c.description,
+                c.id, c.price, c.mileage, c.color, c.state, c.description, c.image,
                 m.id AS model_id, m.model_name,
                 b.id AS brand_id, b.brand_name
             FROM cars c
@@ -50,6 +50,7 @@ class CarDao extends BaseDao {
                 'color' => $row['color'],
                 'state' => $row['state'],
                 'description' => $row['description'],
+                'image' => $row['image'],
                 'model' => [
                     'id' => (int)$row['model_id'],
                     'model_name' => $row['model_name'],

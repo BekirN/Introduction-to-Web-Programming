@@ -1777,110 +1777,46 @@ h2 {
   width: 200px;
 }
 
-.cars-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
 .car-card {
-  background: #333;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
+    background-color: #1e1e1e; /* tamna pozadina */
+    border-radius: 10px;
+    padding: 20px;
+    color: white; /* tekst bijel */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    text-align: center;
+    width: 280px;
+    margin: 15px;
+    display: inline-block;
+    vertical-align: top;
+    transition: transform 0.3s ease;
 }
 
 .car-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.6);
 }
 
-.car-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+.car-card .car-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
 }
 
-.car-info {
-  padding: 1rem;
-  text-align: left;
+.car-card h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #ffffff;
 }
 
-.car-info h3 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: white;
+.car-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #dddddd;
 }
 
-.car-price {
-  color: #f5c518;
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin: 0.5rem 0;
-}
 
-.car-info button {
-  background: #f5c518;
-  color: #1a1a1a;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease;
-}
-
-.car-info button:hover {
-  background: #d4a017;
-}
-
-/* Advertisement Banner Styles */
-.ad-banner {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-  border-radius: 8px;
-  background: #333;
-}
-
-.ad-content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ad-content img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ad-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(245, 197, 24, 0.7);
-  color: #1a1a1a;
-  border: none;
-  padding: 0.5rem;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
-.ad-nav.prev {
-  left: 10px;
-}
-
-.ad-nav.next {
-  right: 10px;
-}
-
-.ad-nav:hover {
-  background: #f5c518;
-}
 
 
 /* Style for all modals to have a black background */
@@ -1933,3 +1869,6 @@ h1 {
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.7); /* Slightly transparent black backdrop */
 }
+
+
+
